@@ -133,13 +133,13 @@ def clean_train_imgs(folder_path): # remove images with no color
 if __name__ == "__main__":
     #Parsing arguments from command line
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_dir', type=str, default='landscape_images/',
+    parser.add_argument('--image_dir', type=str, default='../train_landscape_images/landscape_images/',
                         help='Directory containing all images in the dataset')
 
-    parser.add_argument('--n_val', type=int, default=100,
+    parser.add_argument('--n_val', type=int, default=500,
                         help='Number of images for validation')
 
-    parser.add_argument('--epochs', type=int, default=100,
+    parser.add_argument('--epochs', type=int, default=3,
                         help='Number of training epochs')
 
     parser.add_argument('--save_images', type=bool, default=True,
@@ -163,18 +163,18 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     #Splitting images into train and validation
-    # os.makedirs('images/train/class', exist_ok=True) 
-    # os.makedirs('images/val/class', exist_ok=True)   
-    # for i, file in enumerate(os.listdir(args.image_dir)):
-    #     if i < args.n_val: # first n_val images will be val
-    #         os.rename(args.image_dir + file, 'images/val/class/' + file)
-    #     else: # others will be train
-    #         os.rename(args.image_dir + file, 'images/train/class/' + file)
+    os.makedirs('images/train/class', exist_ok=True) 
+    os.makedirs('images/val/class', exist_ok=True)   
+    for i, file in enumerate(os.listdir(args.image_dir)):
+        if i < args.n_val: # first n_val images will be val
+            os.rename(args.image_dir + file, 'images/val/class/' + file)
+        else: # others will be train
+            os.rename(args.image_dir + file, 'images/train/class/' + file)
     
     # # Make folders
-    # os.makedirs('outputs/color', exist_ok=True)
-    # os.makedirs('outputs/gray', exist_ok=True)
-    # os.makedirs('models', exist_ok=True)
+    os.makedirs('outputs/color', exist_ok=True)
+    os.makedirs('outputs/gray', exist_ok=True)
+    os.makedirs('models', exist_ok=True)
     files = glob.glob('outputs/color/*')
     for f in files:
         os.remove(f)
@@ -183,8 +183,8 @@ if __name__ == "__main__":
         os.remove(f)
 
     # # Clean images
-    # clean_train_imgs("./images/train/class/")
-    # clean_train_imgs("./images/val/class/")
+    clean_train_imgs("./images/train/class/")
+    clean_train_imgs("./images/val/class/")
 
     model = Net().cuda()
 
